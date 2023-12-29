@@ -34,7 +34,7 @@ const Calendar = () => {
   
     const fetchEvents = enteredUsername => {
       // Your API endpoint with the entered username
-      const apiUrl = `https://localhost:7045/api/NYRItems/GetByUsername/${encodeURIComponent(enteredUsername)}`;
+      const apiUrl = `https://n8vsi3jqh4.execute-api.us-east-1.amazonaws.com/Prod/api/NYRItems/GetByUsername/${encodeURIComponent(enteredUsername)}`;
   
       // Fetch events from your API here
       fetch(apiUrl)
@@ -90,7 +90,7 @@ const Calendar = () => {
 
   const createNewGoal = newGoalData => {
     // Your API endpoint to create a new goal
-    const apiUrl = 'https://localhost:7045/api/NYRItems';
+    const apiUrl = 'https://n8vsi3jqh4.execute-api.us-east-1.amazonaws.com/Prod/api/NYRItems';
 
     // Send POST request to create a new goal
     fetch(apiUrl, {
@@ -141,7 +141,7 @@ const Calendar = () => {
 
   const updateCheckInStatus = (eventId, checkInValue) => {
     // Send PUT request to update API with the eventId and checkInValue
-    const apiUrl = `https://localhost:7045/api/NYRItems/PutCheckIn`;
+    const apiUrl = `https://n8vsi3jqh4.execute-api.us-east-1.amazonaws.com/Prod/api/NYRItems/PutCheckIn`;
     fetch(apiUrl, {
       method: 'PUT',
       headers: {
