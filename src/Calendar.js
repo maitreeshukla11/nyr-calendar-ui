@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './FormStyles.css';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -12,6 +12,15 @@ const Calendar = () => {
         cadence: 'DAILY',
       });
   
+    const calendarRef = useRef();
+
+    useEffect(() => {
+      // This effect will be triggered after the component renders
+      if (calendarRef.current) {
+        calendarRef.current.getApi().render(); // Render the calendar immediately
+      }
+    }, [events]); // Run this effect when 'events' state changes
+
     const handleUsernameSubmit = e => {
       e.preventDefault();
   
@@ -28,8 +37,6 @@ const Calendar = () => {
         if (newGoal.goalText.trim() !== '') {
           createNewGoal(newGoal);
         }
-        fetchEvents(username);
-        fetchEvents(username);
       };
   
     const fetchEvents = enteredUsername => {
@@ -50,7 +57,6 @@ const Calendar = () => {
   
           // Set the processed events to the state
           setEvents(processedEvents);
-  
           // Update welcome message
           setWelcomeMessage(`Welcome ${enteredUsername}!`);
         })
@@ -112,6 +118,7 @@ const Calendar = () => {
       })
       .then(data => {
         // Reset the newGoal state
+        fetchEvents(username);
         setNewGoal({
           goalText: '',
           cadence: 'DAILY',
@@ -134,9 +141,6 @@ const Calendar = () => {
       }
       return event;
     });
-    fetchEvents(username);
-    // 2nd one needed to refresh
-    fetchEvents(username);
   };
 
   const updateCheckInStatus = (eventId, checkInValue) => {
@@ -159,6 +163,7 @@ const Calendar = () => {
         return response.json();
       })
       .then(data => {
+        fetchEvents(username);
         console.log('Check-in status updated successfully:', data);
       })
       .catch(error => {
@@ -219,6 +224,7 @@ const Calendar = () => {
       </div>
       )}
       <FullCalendar
+        ref={calendarRef}
         plugins={[dayGridPlugin]}
         initialView="dayGridMonth"
         events={events}
